@@ -6,10 +6,15 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.everis.becakotlinmvvm.HolidayModel
 import com.everis.becakotlinmvvm.ViewModel.HolidayViewModel
 import com.everis.becakotlinmvvm.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    companion object{
+        const val MSG = "observe onChanged()="
+    }
 
     val TAG = javaClass.simpleName
 
@@ -22,28 +27,38 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initUI()
+        initObserver()
 
+        loadingVisibility(true)
+    }
+
+    private fun initObserver(){
         val holidayViewModel = HolidayViewModel()
-
-        binding.progressBar.visibility = View.VISIBLE
-
         holidayViewModel.getHolidays().observe(this,
-            { t ->
-                Log.e(TAG, "observe onChanged()="+t?.size )
-                binding.progressBar.visibility = View.GONE
-                holidayAdapter.addData(t!!)
-                holidayAdapter.notifyDataSetChanged()
+            { holidayList ->
+                Log.e(TAG, MSG + holidayList?.size )
+                UpadateList(holidayList!!)
+                loadingVisibility(false)
             })
     }
 
-    private fun initUI() {
-        binding.rvHolidayList.setHasFixedSize(true);
-        val layoutManager = LinearLayoutManager(this)
-        binding.rvHolidayList.layoutManager = layoutManager
-        binding.rvHolidayList.itemAnimator = DefaultItemAnimator()
+    private fun UpadateList(List: List<HolidayModel>){
+        holidayAdapter.UpdateAdapter(List)
+    }
 
+    private fun initUI() {
+        val layoutManagerHoliday = LinearLayoutManager(this)
+        binding.rvHolidayList.apply {
+            setHasFixedSize(true);
+            layoutManager = layoutManagerHoliday
+            itemAnimator = DefaultItemAnimator()
+        }
         holidayAdapter = HolidayAdapter()
         binding.rvHolidayList.adapter = holidayAdapter
+    }
+
+    private fun loadingVisibility(loading: Boolean){
+        binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
 }
