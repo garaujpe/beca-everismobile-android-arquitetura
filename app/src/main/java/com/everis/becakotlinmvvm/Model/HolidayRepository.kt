@@ -1,7 +1,10 @@
-package com.everis.becakotlinmvvm
+package com.everis.becakotlinmvvm.Model
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.everis.becakotlinmvvm.Api.ApiInterface
+import com.everis.becakotlinmvvm.Api.RetrofitClient
+import com.everis.becakotlinmvvm.HolidayModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
