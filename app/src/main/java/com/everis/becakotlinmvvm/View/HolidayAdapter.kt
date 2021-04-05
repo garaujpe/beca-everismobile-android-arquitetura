@@ -11,14 +11,12 @@ import com.everis.becakotlinmvvm.databinding.ItemHolidayBinding
 
 class HolidayAdapter() : RecyclerView.Adapter<HolidayAdapter.ViewHolder>() {
 
-    var holidayList: List<HolidayModel>
+    var holidayList = arrayListOf<HolidayModel>()
 
-    init {
-        holidayList = ArrayList()
-    }
-
-    fun addData(arrList: List<HolidayModel>){
-        this.holidayList = arrList
+    fun UpdateAdapter(holidayList: List<HolidayModel>){
+        this.holidayList.clear()
+        this.holidayList.addAll(holidayList)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, pos: Int): ViewHolder {
@@ -35,9 +33,7 @@ class HolidayAdapter() : RecyclerView.Adapter<HolidayAdapter.ViewHolder>() {
         }
     }
 
-    override fun getItemCount(): Int {
-        return holidayList.size
-    }
+    override fun getItemCount(): Int = holidayList.size
 
     override fun onBindViewHolder(holder: ViewHolder, pos: Int) {
         holder.bind(holidayList.get(pos))
